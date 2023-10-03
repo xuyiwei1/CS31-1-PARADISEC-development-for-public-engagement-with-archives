@@ -142,7 +142,7 @@ public class HttpClientUtil {
         httpPost.setEntity(new ByteArrayEntity(bytes));
         HttpResponse httpResponse = null;
         byte[] resBytes = null;
-        // 是否需要设置Header
+
         if (headerMap != null && !headerMap.isEmpty()) {
             Set<String> keySet = headerMap.keySet();
             for (String key : keySet) {
@@ -155,7 +155,7 @@ public class HttpClientUtil {
             HttpEntity httpEntity = httpResponse.getEntity();
             System.out.println(EntityUtils.toString(httpEntity));
             int contentLength = (int)httpEntity.getContentLength();
-            // 由于返回的结果可能一次性读不完，所以用buff保存每次读取的数据,而当某次读取到的长度返回值为-1时表示读取结束
+
             byte[] buff = new byte[contentLength];
             int total = 0;
             int len;
