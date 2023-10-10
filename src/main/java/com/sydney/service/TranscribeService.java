@@ -15,4 +15,12 @@ import java.io.IOException;
 public interface TranscribeService {
     public Result getModels();
     public Result uploadAudioMakeTranscribe(Model model, MultipartFile file) throws IOException;
+
+    Result uploadAudioMakeTranscribeByHft(Model model, MultipartFile file) throws IOException;
+
+    Result getTranscribeResult();
+
+    Result getTranscribeStatus();
+
+    Result getTranscribeResultElan();
 }

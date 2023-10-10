@@ -1,4 +1,10 @@
 server:
   port: 8091
 elpis:
-  url: http://192.168.200.100:5001
+  url: http://34.123.35.212
+spring:
+  servlet:
+    multipart:
+      enabled: true #是否启用http上传处理
+      max-file-size: 500MB #设置单个文件最大长度
+      max-request-size: 500MB #最大请求文件的大小

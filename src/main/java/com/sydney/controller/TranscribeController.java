@@ -26,9 +26,35 @@ public class TranscribeController {
         return transcribeService.getModels();
     }
 
-    //begin to transcribe an audio
-    @PostMapping("/transcribe")
+    //begin to transcribe an audio (use Kalid engine)
+    @PostMapping("/kalid/transcribe")
     public Result transcribe(@RequestBody Model model, @RequestPart MultipartFile file) throws IOException {
         return transcribeService.uploadAudioMakeTranscribe(model,file);
     }
+
+    //use model trained by htf engine to transcribe audio
+    @PostMapping("/hft/transcibe")
+    public  Result transcribeByHft(@RequestBody Model model, @RequestPart MultipartFile file) throws IOException {
+        return transcribeService.uploadAudioMakeTranscribeByHft(model,file);
+    }
+
+    //get transcribe result in text format
+    @GetMapping("/transcribe/result/text")
+    public Result getTranscribeResult() {
+        return transcribeService.getTranscribeResult();
+    }
+
+    //get transcribe result in elan format
+    @GetMapping("/transcribe/result/elan")
+    public Result getTranscribeResultElan() {
+        return transcribeService.getTranscribeResultElan();
+    }
+
+    //get transcribe status
+    @GetMapping("/transcribe/status")
+    public Result getTranscribeStatus() {
+        return transcribeService.getTranscribeStatus();
+    }
+
+
 }
