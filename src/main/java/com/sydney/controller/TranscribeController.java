@@ -16,6 +16,7 @@ import java.io.IOException;
  * @date 2023/10/4 9:46
  */
 @RestController
+@CrossOrigin(origins = "*")
 public class TranscribeController {
     @Resource
     private TranscribeService transcribeService;
