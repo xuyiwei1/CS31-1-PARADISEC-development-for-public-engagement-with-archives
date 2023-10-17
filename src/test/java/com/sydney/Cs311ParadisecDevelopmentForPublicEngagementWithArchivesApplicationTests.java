@@ -1,6 +1,7 @@
 package com.sydney;
 
 import com.alibaba.fastjson.JSON;
+import com.sydney.utils.CommandUtil;
 import com.sydney.utils.FileUtil;
 import com.sydney.utils.HttpClientUtil;
 import net.minidev.json.JSONUtil;
@@ -74,5 +75,13 @@ class Cs311ParadisecDevelopmentForPublicEngagementWithArchivesApplicationTests {
         HttpClientUtil.fileUpload(url+"/api/transcription/new",FileUtil.toByteArray("D:\\student\\Aus\\comp5703\\nafsan\\20170726-AK-005.eaf"));
         //开始转录
         HttpClientUtil.getRequestNoParam(url+"/api/transcription/transcribe");
+    }
+
+    @Test
+    void testSendCommandToLinuxServer() {
+        // a commands need to be executed
+        String cmd = "ls /";
+        String result = CommandUtil.getConnect("192.168.200.100", "root", "itcast", cmd);
+        System.out.println(result);
     }
 }
