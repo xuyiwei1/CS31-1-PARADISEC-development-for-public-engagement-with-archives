@@ -4,7 +4,7 @@
 
     <!--2. 基于xml的方式-->
     <select id="getAll" resultType="com.sydney.pojo.Model">
-        select * from ModelPerformance WHERE ModelName = 'm3';
+        select * from ModelPerformance;
     </select>
 
 </mapper>
