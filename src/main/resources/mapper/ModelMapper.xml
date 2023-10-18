@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sydney.dao.ModelDao">
+
+    <!--2. 基于xml的方式-->
+    <select id="getAll" resultType="com.sydney.pojo.Model">
+        select * from ModelPerformance WHERE ModelName = 'm3';
+    </select>
+
+</mapper>
+

@@ -8,3 +8,16 @@ spring:
       enabled: true #是否启用http上传处理
       max-file-size: 500MB #设置单个文件最大长度
       max-request-size: 500MB #最大请求文件的大小
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/5703test?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+
+  main:
+    allow-circular-references: true
+
+  # 配置mybatis实体和xml映射
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sydney.pojo
