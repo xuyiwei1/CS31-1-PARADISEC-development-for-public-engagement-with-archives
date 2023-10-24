@@ -6,8 +6,8 @@ spring:
   servlet:
     multipart:
       enabled: true #是否启用http上传处理
-      max-file-size: 500MB #设置单个文件最大长度
-      max-request-size: 500MB #最大请求文件的大小
+      max-file-size: 1500MB #设置单个文件最大长度
+      max-request-size: 1500MB #最大请求文件的大小
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root

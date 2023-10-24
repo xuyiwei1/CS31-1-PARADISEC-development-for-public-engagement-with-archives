@@ -226,6 +226,52 @@ public class HttpClientUtil {
         return sResponse;
     }
 
+
+    public static String fileUploadWithHeaders(String url, byte[] file) {
+        //Map<String, String> param = new HashMap<>();//其他参数,自行添加
+
+        HttpPost httppost = new HttpPost(url); //fileUploadUrl 上传地址
+
+        httppost.setHeader("Content-Type", "application/x-zip-compressed");//根据需要设置头信息
+
+        CloseableHttpResponse response = null;
+        CloseableHttpClient httpClient = null;
+        String sResponse = null;
+        try {
+            httpClient = HttpClientBuilder.create().build();
+            // HttpMultipartMode.RFC6532参数的设定是为避免文件名为中文时乱码
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create()
+                    .setMode(HttpMultipartMode.RFC6532);
+
+            byte[] bytes =  file;
+            // 添加文件,也可以添加字节流  file的参数名称
+            builder.addBinaryBody("file", bytes, ContentType.APPLICATION_JSON, "");
+            // 添加参数
+//            if (param != null) {
+//                for (String key : param.keySet()) {
+//                    String value = param.get(key);
+//                    if (StringUtils.isNotBlank(value)) {
+//                        builder.addTextBody(key, value);
+//                    }
+//                }
+//            }
+            HttpEntity reqEntity = builder.build();
+            httppost.setEntity(reqEntity);
+
+            response = httpClient.execute(httppost);
+            HttpEntity responseEntity = response.getEntity();
+            sResponse = EntityUtils.toString(responseEntity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("调用上传文件出错：" + e.getMessage());
+        }
+        //JSONObject jsonObject = JSONObject.parseObject(sResponse);
+//        if (jsonObject == null) {
+//            throw new BusinessException("返回值为空！");
+//        }
+//        return jsonObject.toJavaObject(ResultClass.class);//返回json转对象
+        return sResponse;
+    }
     public static void close(CloseableHttpClient httpClient, CloseableHttpResponse httpResponse) throws IOException{
         if (null != httpClient) {
             httpClient.close();
