@@ -156,5 +156,17 @@ public class TranscribeServiceImpl implements TranscribeService {
         return Result.ok(transStatus);
     }
 
+    @Override
+    public Result uploadModel(MultipartFile model) throws IOException {
+        //convert the model to the binary file
+        byte[] bytes = model.getBytes();
+        //upload model to elpis using httpclient
+        String uploadResult = HttpClientUtil.fileUpload("/api/model/upload", bytes);
+        if(uploadResult.isEmpty()) {
+            return Result.fail("uploading model fail, please try again.");
+        }
+        return Result.ok(uploadResult);
+    }
+
 
 }

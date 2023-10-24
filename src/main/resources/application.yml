@@ -1,7 +1,7 @@
 server:
   port: 8091
 elpis:
-  url: http://34.121.95.17
+  url: http://192.168.200.100:5001
 spring:
   servlet:
     multipart:

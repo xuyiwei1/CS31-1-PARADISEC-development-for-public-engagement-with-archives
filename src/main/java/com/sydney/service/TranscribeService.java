@@ -23,4 +23,6 @@ public interface TranscribeService {
     Result getTranscribeStatus();
 
     Result getTranscribeResultElan();
+
+    Result uploadModel(MultipartFile model) throws IOException;
 }

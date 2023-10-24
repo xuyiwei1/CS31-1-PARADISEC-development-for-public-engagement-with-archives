@@ -57,5 +57,10 @@ public class TranscribeController {
         return transcribeService.getTranscribeStatus();
     }
 
+    //upload a model to elpis
+    @PostMapping("/upload/model")
+    public Result uploadModel(@RequestPart("model") MultipartFile model) throws IOException {
+        return transcribeService.uploadModel(model);
+    }
 
 }
