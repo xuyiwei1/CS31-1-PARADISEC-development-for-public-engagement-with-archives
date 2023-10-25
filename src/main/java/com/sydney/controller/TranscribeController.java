@@ -29,7 +29,7 @@ public class TranscribeController {
 
     //begin to transcribe an audio (use Kalid engine)
     @PostMapping("/kalid/transcribe")
-    public Result transcribe(@RequestBody Model model, @RequestPart MultipartFile file) throws IOException {
+    public Result transcribe(@RequestBody Model model, @RequestPart("file") MultipartFile file) throws IOException {
         return transcribeService.uploadAudioMakeTranscribe(model,file);
     }
 
@@ -59,8 +59,8 @@ public class TranscribeController {
 
     //upload a model to elpis
     @PostMapping("/upload/model")
-    public Result uploadModel(@RequestPart("model") MultipartFile model) throws IOException {
-        return transcribeService.uploadModel(model);
+    public Result uploadModel(@RequestPart("file") MultipartFile file) throws IOException {
+        return transcribeService.uploadModel(file);
     }
 
 }

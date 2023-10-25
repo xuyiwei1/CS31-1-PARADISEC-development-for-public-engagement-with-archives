@@ -164,7 +164,7 @@ public class TranscribeServiceImpl implements TranscribeService {
         //convert the model to the binary file
         byte[] bytes = model.getBytes();
         //upload model to elpis using httpclient
-        String uploadResult = HttpClientUtil.fileUpload(url+"/api/model/upload", bytes);
+        String uploadResult = HttpClientUtil.fileUploadWithHeaders(url+"/api/model/upload", bytes);
         if(uploadResult.isEmpty()) {
             return Result.fail("uploading model fail, please try again.");
         }

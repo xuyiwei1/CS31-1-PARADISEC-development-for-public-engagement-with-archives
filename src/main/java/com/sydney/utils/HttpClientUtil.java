@@ -232,7 +232,12 @@ public class HttpClientUtil {
 
         HttpPost httppost = new HttpPost(url); //fileUploadUrl 上传地址
 
-        httppost.setHeader("Content-Type", "application/x-zip-compressed");//根据需要设置头信息
+        httppost.setHeader("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundaryo9tdoAAPPjxrV6Px");//根据需要设置头信息
+        httppost.setHeader("Accept-Encoding", "gzip, deflate");//根据需要设置头信息
+        httppost.setHeader("Accept-Encoding", "gzip, deflate");//根据需要设置头信息
+        httppost.setHeader("Connection", "keep-alive");//根据需要设置头信息
+
+
 
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = null;
