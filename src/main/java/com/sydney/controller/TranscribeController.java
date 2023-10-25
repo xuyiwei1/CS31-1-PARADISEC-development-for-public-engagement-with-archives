@@ -28,15 +28,33 @@ public class TranscribeController {
     }
 
     //begin to transcribe an audio (use Kalid engine)
-    @PostMapping("/kalid/transcribe")
+    /*@PostMapping("/kalid/transcribe")
     public Result transcribe(@RequestBody Model model, @RequestPart("file") MultipartFile file) throws IOException {
         return transcribeService.uploadAudioMakeTranscribe(model,file);
+    }*/
+
+    //begin to transcribe an audio (use Kalid engine)
+    @PostMapping("/kalid/set/model/")
+    public Result transcribe(@RequestBody Model model) throws IOException {
+        return transcribeService.setModelParamKaldi(model);
+    }
+
+    //set params before make transcribe
+    @PostMapping("/kalid/transcribe")
+    public Result transcribe(@RequestParam("files") MultipartFile file) throws IOException {
+        return transcribeService.uploadAudioMakeTranscribe(file);
     }
 
     //use model trained by htf engine to transcribe audio
     @PostMapping("/hft/transcibe")
-    public  Result transcribeByHft(@RequestBody Model model, @RequestPart MultipartFile file) throws IOException {
-        return transcribeService.uploadAudioMakeTranscribeByHft(model,file);
+    public  Result transcribeByHft(@RequestParam("files") MultipartFile file) throws IOException {
+        return transcribeService.uploadAudioMakeTranscribeByHft(file);
+    }
+
+    //set params before make transcribe
+    @PostMapping("/hft/set/model")
+    public  Result transcribeByHft(@RequestBody Model model) throws IOException {
+        return transcribeService.setModelParamHFT(model);
     }
 
     //get transcribe result in text format
