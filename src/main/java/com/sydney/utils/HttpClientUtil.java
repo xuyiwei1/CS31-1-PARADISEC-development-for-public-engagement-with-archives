@@ -1,6 +1,9 @@
 package com.sydney.utils;
 
 
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,6 +35,16 @@ import java.util.Set;
 
 
 public class HttpClientUtil {
+
+    public static String postWithJsonParam(String url, Map<String,Object> paramMap) {
+        String jsonString = JSONObject.toJSONString(paramMap);
+        //链式构建请求
+        String result2 = HttpRequest.post(url)
+                .header(Header.CONTENT_TYPE, "application/json")//头信息，多个头信息多次调用此方法即可
+                .body(jsonString)//表单内容
+                .execute().body();
+        return result2;
+    }
 
     //get request no parameters
     public static String getRequestNoParam(String url) {
@@ -101,12 +114,37 @@ public class HttpClientUtil {
         return "Fail";
     }
 
+//    public static void postWithParam(String url) {
+//        JSONObject jsonObject = new JSONObject();
+//        //jsonObject.put("username",user.getUsername());
+//        jsonObject.put("password","123");
+//        System.out.println(JSONUtil.toJsonStr(jsonObject));
+//// 添加请求头信息
+//        Map<String, String > heads = new HashMap<>();
+//// 使用json发送请求，下面的是必须的
+//        heads.put("Content-Type", "application/json;charset=UTF-8");
+//
+///**
+// ** headerMap是添加的请求头，
+// body是传入的参数，这里选择json，后端使用@RequestBody接收
+// */
+//
+//        HttpResponse response = HttpRequest.post(url)
+//                .headerMap(heads, false)
+//                .body(String.valueOf(jsonObject))
+//                .timeout(5 * 60 * 1000)
+//                .execute();
+//
+//        System.out.println(response);
+//
+//    }
+
     public static String postWithRequestBody(String url, String requestBody) {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String sendUrl = url;
 
         HttpPost httpPost = new HttpPost(sendUrl);
-        httpPost.setHeader("Content-Type", "application/json;charset=utf8");
+        httpPost.setHeader("Content-Type", "application/json");
         CloseableHttpResponse response = null;
         try {
             // 2.设置request-body

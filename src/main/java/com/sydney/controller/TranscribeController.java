@@ -27,28 +27,36 @@ public class TranscribeController {
         return transcribeService.getModels();
     }
 
-    //begin to transcribe an audio (use Kalid engine)
-    /*@PostMapping("/kalid/transcribe")
-    public Result transcribe(@RequestBody Model model, @RequestPart("file") MultipartFile file) throws IOException {
-        return transcribeService.uploadAudioMakeTranscribe(model,file);
-    }*/
 
-    //begin to transcribe an audio (use Kalid engine)
-    @PostMapping("/kalid/set/model/")
-    public Result transcribe(@RequestBody Model model) throws IOException {
+
+    //set params of model
+    @PostMapping("/kaldi/set/model/")
+    public Result setModel(@RequestBody Model model) throws IOException {
         return transcribeService.setModelParamKaldi(model);
     }
 
     //set params before make transcribe
-    @PostMapping("/kalid/transcribe")
-    public Result transcribe(@RequestParam("files") MultipartFile file) throws IOException {
-        return transcribeService.uploadAudioMakeTranscribe(file);
+    @GetMapping("/kaldi/upload")
+    public Result upload(@RequestParam("filePath") String filePath) throws IOException {
+        return transcribeService.uploadAudio(filePath);
+    }
+
+    //begin to trans Kaldi
+    @GetMapping("/kaldi/transcribe")
+    public Result transcribe() {
+        return transcribeService.transcribe();
+    }
+
+    //begin to trans HFT
+    @GetMapping("/hft/transcribe")
+    public Result transcribeHFT() {
+        return transcribeService.transcribe();
     }
 
     //use model trained by htf engine to transcribe audio
-    @PostMapping("/hft/transcibe")
-    public  Result transcribeByHft(@RequestParam("files") MultipartFile file) throws IOException {
-        return transcribeService.uploadAudioMakeTranscribeByHft(file);
+    @GetMapping("/hft/upload")
+    public  Result transcribeByHft(@RequestParam("filePath") String filePath) throws IOException {
+        return transcribeService.uploadAudio(filePath);
     }
 
     //set params before make transcribe
@@ -77,7 +85,7 @@ public class TranscribeController {
 
     //upload a model to elpis
     @PostMapping("/upload/model")
-    public Result uploadModel(@RequestPart("file") MultipartFile file) throws IOException {
+    public Result uploadModel(@RequestParam("file") MultipartFile file) throws IOException {
         return transcribeService.uploadModel(file);
     }
 

@@ -14,9 +14,9 @@ import java.io.IOException;
  */
 public interface TranscribeService {
     public Result getModels();
-    public Result uploadAudioMakeTranscribe( MultipartFile file) throws IOException;
+    public Result uploadAudio(String filePath) throws IOException;
 
-    Result uploadAudioMakeTranscribeByHft(MultipartFile file) throws IOException;
+    //Result uploadAudioMakeTranscribeByHft(MultipartFile file) throws IOException;
 
     Result getTranscribeResult();
 
@@ -29,4 +29,6 @@ public interface TranscribeService {
     Result setModelParamKaldi(Model model);
 
     Result setModelParamHFT(Model model);
+
+    Result transcribe();
 }
