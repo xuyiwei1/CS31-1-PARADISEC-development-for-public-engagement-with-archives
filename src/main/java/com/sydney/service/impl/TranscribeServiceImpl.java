@@ -100,20 +100,20 @@ public class TranscribeServiceImpl implements TranscribeService {
         return Result.ok(transStatus);
     }
 
-    //TODO to implement
     @Override
-    public Result uploadModel(MultipartFile model) throws IOException {
-        if(model == null) {
+    public Result uploadModel(String modelPath) throws IOException {
+        if(modelPath == null || modelPath.isEmpty()) {
             return Result.fail("model can not be null");
         }
-        //convert the model to the binary file
-        byte[] bytes = model.getBytes();
-        //upload model to elpis using httpclient
-        String uploadResult = HttpClientUtil.fileUploadWithHeaders(url+"/api/model/upload", bytes);
-        if(uploadResult.isEmpty()) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("file", cn.hutool.core.io.FileUtil.file(modelPath));
+
+        String result= HttpUtil.post(url+"/api/model/upload", paramMap);
+        System.out.println(result);
+        if(result.isEmpty()) {
             return Result.fail("uploading model fail, please try again.");
         }
-        return Result.ok(uploadResult);
+        return Result.ok(result);
     }
 
     @Override

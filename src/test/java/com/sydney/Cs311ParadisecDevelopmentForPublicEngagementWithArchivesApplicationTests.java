@@ -145,6 +145,15 @@ class Cs311ParadisecDevelopmentForPublicEngagementWithArchivesApplicationTests {
     }
 
     @Test
+    void testUploadModel() {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("file", cn.hutool.core.io.FileUtil.file("D:\\ChromeDownload\\model.zip"));
+
+        String result= HttpUtil.post(url+"/api/model/upload", paramMap);
+        System.out.println(result);
+    }
+
+    @Test
     void testSendCommandToLinuxServer() {
         // a commands need to be executed
         String cmd = "ls /";

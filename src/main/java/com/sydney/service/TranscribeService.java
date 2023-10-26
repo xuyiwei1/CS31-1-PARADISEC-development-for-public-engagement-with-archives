@@ -24,7 +24,7 @@ public interface TranscribeService {
 
     Result getTranscribeResultElan();
 
-    Result uploadModel(MultipartFile model) throws IOException;
+    Result uploadModel(String modelPath) throws IOException;
 
     Result setModelParamKaldi(Model model);
 
