@@ -38,10 +38,10 @@ public class HttpClientUtil {
 
     public static String postWithJsonParam(String url, Map<String,Object> paramMap) {
         String jsonString = JSONObject.toJSONString(paramMap);
-        //链式构建请求
+
         String result2 = HttpRequest.post(url)
-                .header(Header.CONTENT_TYPE, "application/json")//头信息，多个头信息多次调用此方法即可
-                .body(jsonString)//表单内容
+                .header(Header.CONTENT_TYPE, "application/json")
+                .body(jsonString)
                 .execute().body();
         return result2;
     }
