@@ -27,8 +27,6 @@ public class TranscribeController {
         return transcribeService.getModels();
     }
 
-
-
     //set params of model
     @PostMapping("/kaldi/set/model/")
     public Result setModel(@RequestBody Model model) throws IOException {
