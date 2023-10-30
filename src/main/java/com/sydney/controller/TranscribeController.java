@@ -1,13 +1,21 @@
 package com.sydney.controller;
 
+
+import cn.hutool.http.HttpUtil;
 import com.sydney.pojo.Model;
 import com.sydney.pojo.Result;
 import com.sydney.service.TranscribeService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.annotation.Resource;
+
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+
 
 /**
  * @author Yiwei Xu
@@ -16,10 +24,13 @@ import java.io.IOException;
  * @date 2023/10/4 9:46
  */
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin
 public class TranscribeController {
     @Resource
     private TranscribeService transcribeService;
+
+    @Value("${elpis.url}")
+    private String url;
 
     //Get trained model from elpis
     @GetMapping("/list/models")
@@ -53,13 +64,24 @@ public class TranscribeController {
 
     //use model trained by htf engine to transcribe audio
     @GetMapping("/hft/upload")
-    public  Result transcribeByHft(@RequestParam("filePath") String filePath) throws IOException {
+    public Result transcribeByHft(@RequestParam("filePath") String filePath) throws IOException {
         return transcribeService.uploadAudio(filePath);
     }
 
+    @PostMapping("/test")
+    public Result test(@RequestParam("files") MultipartFile file) throws IOException {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        File file1 = this.MultipartFileToFile(file);
+        paramMap.put("file", file1);
+        String result = HttpUtil.post(url + "/api/model/upload", paramMap);
+        System.out.println(result);
+        return null;
+    }
+
+
     //set params before make transcribe
     @PostMapping("/hft/set/model")
-    public  Result transcribeByHft(@RequestBody Model model) throws IOException {
+    public Result transcribeByHft(@RequestBody Model model) throws IOException {
         return transcribeService.setModelParamHFT(model);
     }
 
@@ -87,4 +109,22 @@ public class TranscribeController {
         return transcribeService.uploadModel(modelPath);
     }
 
+
+    private File MultipartFileToFile(MultipartFile multiFile) {
+        // 获取文件名
+        String fileName = multiFile.getOriginalFilename();
+        // 获取文件后缀
+        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        // 若需要防止生成的临时文件重复,可以在文件名后添加随机码
+
+        try {
+            File file = File.createTempFile(fileName, prefix);
+            multiFile.transferTo(file);
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
+
