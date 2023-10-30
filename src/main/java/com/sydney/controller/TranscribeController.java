@@ -126,5 +126,54 @@ public class TranscribeController {
         }
         return null;
     }
+
+
+    //set params of model
+    @PostMapping("/kaldi/set/model2")
+    public Result setModel2(@RequestBody Model model) throws IOException {
+        return transcribeService.setModelParamKaldi(model);
+    }
+
+    //set params before make transcribe
+    @PostMapping("/kaldi/upload2")
+    public Result upload2(@RequestParam("file") MultipartFile file) throws IOException {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        File file1 = this.MultipartFileToFile(file);
+        paramMap.put("file", file1);
+        String result= HttpUtil.post(url + "/api/transcription/new", paramMap);
+        System.out.println(result);
+        return Result.ok(result);
+    }
+
+    //begin to trans Kaldi
+    @GetMapping("/kaldi/transcribe2")
+    public Result transcribe2() {
+        return transcribeService.transcribe();
+    }
+
+    //set params before make transcribe
+    @PostMapping("/hft/set/model")
+    public Result transcribeByHft2(@RequestBody Model model) throws IOException {
+        return transcribeService.setModelParamHFT(model);
+    }
+
+    //use model trained by htf engine to transcribe audio
+    @PostMapping("/hft/upload")
+    public Result transcribeByHft2(@RequestParam("file") MultipartFile file) throws IOException {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        File file1 = this.MultipartFileToFile(file);
+        paramMap.put("file", file1);
+        String result= HttpUtil.post(url + "/api/transcription/new", paramMap);
+        System.out.println(result);
+        return Result.ok(result);
+    }
+
+
+    //begin to trans HFT
+    @GetMapping("/hft/transcribe")
+    public Result transcribeHFT2() {
+        return transcribeService.transcribe();
+    }
+
 }
 

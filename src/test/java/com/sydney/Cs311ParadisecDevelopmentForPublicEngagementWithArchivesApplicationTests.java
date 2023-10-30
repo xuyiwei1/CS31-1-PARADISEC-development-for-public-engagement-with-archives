@@ -125,7 +125,7 @@ class Cs311ParadisecDevelopmentForPublicEngagementWithArchivesApplicationTests {
 
         String result2 = HttpRequest.post(url + "/api/model/load")
                 .header(Header.CONTENT_TYPE, "application/json")
-                .body(jsonString)//表单内容
+                .body(jsonString)
                 .execute().body();
         System.out.println(result2);
 
