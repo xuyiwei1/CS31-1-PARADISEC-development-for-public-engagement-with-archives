@@ -152,13 +152,13 @@ public class TranscribeController {
     }
 
     //set params before make transcribe
-    @PostMapping("/hft/set/model")
+    @PostMapping("/hft/set/model2")
     public Result transcribeByHft2(@RequestBody Model model) throws IOException {
         return transcribeService.setModelParamHFT(model);
     }
 
     //use model trained by htf engine to transcribe audio
-    @PostMapping("/hft/upload")
+    @PostMapping("/hft/upload2")
     public Result transcribeByHft2(@RequestParam("file") MultipartFile file) throws IOException {
         HashMap<String, Object> paramMap = new HashMap<>();
         File file1 = this.MultipartFileToFile(file);
@@ -170,7 +170,7 @@ public class TranscribeController {
 
 
     //begin to trans HFT
-    @GetMapping("/hft/transcribe")
+    @GetMapping("/hft/transcribe2")
     public Result transcribeHFT2() {
         return transcribeService.transcribe();
     }
