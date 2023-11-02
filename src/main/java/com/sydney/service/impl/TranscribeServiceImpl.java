@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,22 +56,10 @@ public class TranscribeServiceImpl implements TranscribeService {
     }
 
 
-    /*@Override
-    public Result uploadAudioMakeTranscribeByHft(MultipartFile file) throws IOException {
-        if(file.isEmpty()) {
-            return Result.fail("audio file cannot be empty");
-        }
-
-        //上传需要转录的语音文件
-        HttpClientUtil.fileUpload(url+"/api/transcription/new", bytes);
-        //开始转录
-        HttpClientUtil.getRequestNoParam(url+"/api/transcription/transcribe");
-        return Result.ok("Please wait for transcribing");
-    }*/
 
 
 
-    //get transcribe result 获取txt格式的转录结果
+
     @Override
     public Result getTranscribeResult() {
         String transcribeResult = HttpUtil.get(url + "/api/transcription/text");
@@ -80,7 +69,7 @@ public class TranscribeServiceImpl implements TranscribeService {
         return Result.ok(transcribeResult);
     }
 
-    //获取当前语音转录的状态，用于判断是否转录完成，以及转录进行到哪个阶段了
+
     @Override
     public Result getTranscribeStatus() {
         String transStatus = HttpUtil.get(url + "/api/transcription/status");
@@ -90,7 +79,7 @@ public class TranscribeServiceImpl implements TranscribeService {
         return Result.ok(transStatus);
     }
 
-    //获取elan格式的转录结果
+
     @Override
     public Result getTranscribeResultElan() {
         String transStatus = HttpUtil.get(url + "/api/transcription/elan");
@@ -118,7 +107,7 @@ public class TranscribeServiceImpl implements TranscribeService {
 
     @Override
     public Result setModelParamKaldi(Model model) {
-        //非空校验
+
         if(model == null) {
             return Result.fail("the model can not be null");
         }
@@ -135,19 +124,19 @@ public class TranscribeServiceImpl implements TranscribeService {
             return Result.fail("model name can not be null or empty");
         }
 
-        //设置引擎名称
+
         Map<String,Object> engineMap = new HashMap<>();
         engineMap.put("engine_name",model.getEngineName());
         String s = HttpClientUtil.postWithJsonParam(url + "/api/config/engine/load", engineMap);
-        //设置模型
+
         Map<String,Object> modelMap = new HashMap<>();
         modelMap.put("name",model.getModelName());
         String s1 = HttpClientUtil.postWithJsonParam(url + "/api/model/load", modelMap);
-        //设置数据集
+
         Map<String,Object> dataSetMap = new HashMap<>();
         dataSetMap.put("name",model.getDataSetName());
         String s2 = HttpClientUtil.postWithJsonParam(url + "/api/dataset/load", dataSetMap);
-        //设置字典
+
         Map<String,Object> pronDictMap = new HashMap<>();
         pronDictMap.put("name",model.getPronDictMapName());
         String s3 = HttpClientUtil.postWithJsonParam(url + "/api/pron-dict/load", pronDictMap);
@@ -170,15 +159,15 @@ public class TranscribeServiceImpl implements TranscribeService {
             return Result.fail("model name can not be null or empty");
         }
 
-        //设置引擎名称
+
         Map<String,Object> engineMap = new HashMap<>();
         engineMap.put("engine_name",model.getEngineName());
         String s = HttpClientUtil.postWithJsonParam(url + "/api/config/engine/load", engineMap);
-        //设置模型
+
         Map<String,Object> modelMap = new HashMap<>();
         modelMap.put("name",model.getModelName());
         String s1 = HttpClientUtil.postWithJsonParam(url + "/api/model/load", modelMap);
-        //设置数据集
+
         Map<String,Object> dataSetMap = new HashMap<>();
         dataSetMap.put("name",model.getDataSetName());
         String s2 = HttpClientUtil.postWithJsonParam(url + "/api/dataset/load", dataSetMap);
@@ -192,6 +181,26 @@ public class TranscribeServiceImpl implements TranscribeService {
         String result1= HttpUtil.get(url+"/api/transcription/transcribe");
         System.out.println(result1);
         return Result.ok(result1);
+    }
+
+    @Override
+    public Result upload2(MultipartFile file) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        File file1 = FileUtil.MultipartFileToFile(file);
+        paramMap.put("file", file1);
+        String result= HttpUtil.post(url + "/api/transcription/new", paramMap);
+        System.out.println(result);
+        return Result.ok(result);
+    }
+
+    @Override
+    public Result uploadByHFT2(MultipartFile file) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        File file1 = FileUtil.MultipartFileToFile(file);
+        paramMap.put("file", file1);
+        String result= HttpUtil.post(url + "/api/transcription/new", paramMap);
+        System.out.println(result);
+        return Result.ok(result);
     }
 
 

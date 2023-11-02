@@ -1,5 +1,7 @@
 package com.sydney.utils;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.*;
 
 /**
@@ -9,6 +11,20 @@ import java.io.*;
  * @date 2023/9/19 16:05
  */
 public class FileUtil {
+
+    public static File MultipartFileToFile(MultipartFile multiFile) {
+        String fileName = multiFile.getOriginalFilename();
+        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        try {
+            File file = File.createTempFile(fileName, prefix);
+            multiFile.transferTo(file);
+            return file;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static byte[] toByteArray(String filename) throws IOException {
 
         File f = new File(filename);

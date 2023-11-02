@@ -16,8 +16,6 @@ public interface TranscribeService {
     public Result getModels();
     public Result uploadAudio(String filePath) throws IOException;
 
-    //Result uploadAudioMakeTranscribeByHft(MultipartFile file) throws IOException;
-
     Result getTranscribeResult();
 
     Result getTranscribeStatus();
@@ -31,4 +29,8 @@ public interface TranscribeService {
     Result setModelParamHFT(Model model);
 
     Result transcribe();
+
+    Result upload2(MultipartFile file);
+
+    Result uploadByHFT2(MultipartFile file);
 }

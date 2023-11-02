@@ -29,7 +29,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -114,30 +113,6 @@ public class HttpClientUtil {
         return "Fail";
     }
 
-//    public static void postWithParam(String url) {
-//        JSONObject jsonObject = new JSONObject();
-//        //jsonObject.put("username",user.getUsername());
-//        jsonObject.put("password","123");
-//        System.out.println(JSONUtil.toJsonStr(jsonObject));
-//// 添加请求头信息
-//        Map<String, String > heads = new HashMap<>();
-//// 使用json发送请求，下面的是必须的
-//        heads.put("Content-Type", "application/json;charset=UTF-8");
-//
-///**
-// ** headerMap是添加的请求头，
-// body是传入的参数，这里选择json，后端使用@RequestBody接收
-// */
-//
-//        HttpResponse response = HttpRequest.post(url)
-//                .headerMap(heads, false)
-//                .body(String.valueOf(jsonObject))
-//                .timeout(5 * 60 * 1000)
-//                .execute();
-//
-//        System.out.println(response);
-//
-//    }
 
     public static String postWithRequestBody(String url, String requestBody) {
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
@@ -147,7 +122,6 @@ public class HttpClientUtil {
         httpPost.setHeader("Content-Type", "application/json");
         CloseableHttpResponse response = null;
         try {
-            // 2.设置request-body
             if (!StringUtils.isEmpty(requestBody)) {
                 ByteArrayEntity entity = new ByteArrayEntity(requestBody.getBytes(StandardCharsets.UTF_8));
                 entity.setContentType("application/json");
@@ -219,25 +193,25 @@ public class HttpClientUtil {
     }
 
     public static String fileUpload(String url, byte[] file) {
-        //Map<String, String> param = new HashMap<>();//其他参数,自行添加
+        //Map<String, String> param = new HashMap<>();
 
-        HttpPost httppost = new HttpPost(url); //fileUploadUrl 上传地址
+        HttpPost httppost = new HttpPost(url);
 
-        //httppost.setHeader("**", **);//根据需要设置头信息
+        //httppost.setHeader("**", **);
 
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = null;
         String sResponse = null;
         try {
             httpClient = HttpClientBuilder.create().build();
-            // HttpMultipartMode.RFC6532参数的设定是为避免文件名为中文时乱码
+
             MultipartEntityBuilder builder = MultipartEntityBuilder.create()
                     .setMode(HttpMultipartMode.RFC6532);
 
             byte[] bytes =  file;
-            // 添加文件,也可以添加字节流  file的参数名称
+
             builder.addBinaryBody("file", bytes, ContentType.APPLICATION_JSON, "");
-            // 添加参数
+
 //            if (param != null) {
 //                for (String key : param.keySet()) {
 //                    String value = param.get(key);
@@ -254,27 +228,22 @@ public class HttpClientUtil {
             sResponse = EntityUtils.toString(responseEntity, "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("调用上传文件出错：" + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        //JSONObject jsonObject = JSONObject.parseObject(sResponse);
-//        if (jsonObject == null) {
-//            throw new BusinessException("返回值为空！");
-//        }
-//        return jsonObject.toJavaObject(ResultClass.class);//返回json转对象
+
         return sResponse;
     }
 
 
     public static String fileUploadWithHeaders(String url, byte[] file) {
-        //Map<String, String> param = new HashMap<>();//其他参数,自行添加
+        //Map<String, String> param = new HashMap<>();
 
-        HttpPost httppost = new HttpPost(url); //fileUploadUrl 上传地址
+        HttpPost httppost = new HttpPost(url);
 
         httppost.setHeader("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundaryo9tdoAAPPjxrV6Px");//根据需要设置头信息
-        httppost.setHeader("Accept-Encoding", "gzip, deflate");//根据需要设置头信息
-        httppost.setHeader("Accept-Encoding", "gzip, deflate");//根据需要设置头信息
-        httppost.setHeader("Connection", "keep-alive");//根据需要设置头信息
-
+        httppost.setHeader("Accept-Encoding", "gzip, deflate");
+        httppost.setHeader("Accept-Encoding", "gzip, deflate");
+        httppost.setHeader("Connection", "keep-alive");
 
 
         CloseableHttpResponse response = null;
@@ -282,14 +251,11 @@ public class HttpClientUtil {
         String sResponse = null;
         try {
             httpClient = HttpClientBuilder.create().build();
-            // HttpMultipartMode.RFC6532参数的设定是为避免文件名为中文时乱码
             MultipartEntityBuilder builder = MultipartEntityBuilder.create()
                     .setMode(HttpMultipartMode.RFC6532);
 
             byte[] bytes =  file;
-            // 添加文件,也可以添加字节流  file的参数名称
             builder.addBinaryBody("file", bytes, ContentType.APPLICATION_JSON, "");
-            // 添加参数
 //            if (param != null) {
 //                for (String key : param.keySet()) {
 //                    String value = param.get(key);
@@ -306,13 +272,9 @@ public class HttpClientUtil {
             sResponse = EntityUtils.toString(responseEntity, "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("调用上传文件出错：" + e.getMessage());
+            throw new RuntimeException( e.getMessage());
         }
-        //JSONObject jsonObject = JSONObject.parseObject(sResponse);
-//        if (jsonObject == null) {
-//            throw new BusinessException("返回值为空！");
-//        }
-//        return jsonObject.toJavaObject(ResultClass.class);//返回json转对象
+
         return sResponse;
     }
     public static void close(CloseableHttpClient httpClient, CloseableHttpResponse httpResponse) throws IOException{

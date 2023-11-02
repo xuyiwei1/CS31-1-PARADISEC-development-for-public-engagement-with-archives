@@ -5,12 +5,14 @@ import cn.hutool.http.HttpUtil;
 import com.sydney.pojo.Model;
 import com.sydney.pojo.Result;
 import com.sydney.service.TranscribeService;
+import com.sydney.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.Resource;
+import javax.xml.ws.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +26,6 @@ import java.util.HashMap;
  * @date 2023/10/4 9:46
  */
 @RestController
-//@CrossOrigin
 public class TranscribeController {
     @Resource
     private TranscribeService transcribeService;
@@ -68,17 +69,6 @@ public class TranscribeController {
         return transcribeService.uploadAudio(filePath);
     }
 
-    @PostMapping("/test")
-    public Result test(@RequestParam("files") MultipartFile file) throws IOException {
-        HashMap<String, Object> paramMap = new HashMap<>();
-        File file1 = this.MultipartFileToFile(file);
-        paramMap.put("file", file1);
-        String result = HttpUtil.post(url + "/api/model/upload", paramMap);
-        System.out.println(result);
-        return null;
-    }
-
-
     //set params before make transcribe
     @PostMapping("/hft/set/model")
     public Result transcribeByHft(@RequestBody Model model) throws IOException {
@@ -110,23 +100,6 @@ public class TranscribeController {
     }
 
 
-    private File MultipartFileToFile(MultipartFile multiFile) {
-        // 获取文件名
-        String fileName = multiFile.getOriginalFilename();
-        // 获取文件后缀
-        String prefix = fileName.substring(fileName.lastIndexOf("."));
-        // 若需要防止生成的临时文件重复,可以在文件名后添加随机码
-
-        try {
-            File file = File.createTempFile(fileName, prefix);
-            multiFile.transferTo(file);
-            return file;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 
     //set params of model
     @PostMapping("/kaldi/set/model2")
@@ -137,12 +110,8 @@ public class TranscribeController {
     //set params before make transcribe
     @PostMapping("/kaldi/upload2")
     public Result upload2(@RequestParam("file") MultipartFile file) throws IOException {
-        HashMap<String, Object> paramMap = new HashMap<>();
-        File file1 = this.MultipartFileToFile(file);
-        paramMap.put("file", file1);
-        String result= HttpUtil.post(url + "/api/transcription/new", paramMap);
-        System.out.println(result);
-        return Result.ok(result);
+        return transcribeService.upload2(file);
+
     }
 
     //begin to trans Kaldi
@@ -153,19 +122,14 @@ public class TranscribeController {
 
     //set params before make transcribe
     @PostMapping("/hft/set/model2")
-    public Result transcribeByHft2(@RequestBody Model model) throws IOException {
+    public Result setModelHft2(@RequestBody Model model) throws IOException {
         return transcribeService.setModelParamHFT(model);
     }
 
     //use model trained by htf engine to transcribe audio
     @PostMapping("/hft/upload2")
-    public Result transcribeByHft2(@RequestParam("file") MultipartFile file) throws IOException {
-        HashMap<String, Object> paramMap = new HashMap<>();
-        File file1 = this.MultipartFileToFile(file);
-        paramMap.put("file", file1);
-        String result= HttpUtil.post(url + "/api/transcription/new", paramMap);
-        System.out.println(result);
-        return Result.ok(result);
+    public Result uploadByHFT2(@RequestParam("file") MultipartFile file) throws IOException {
+        return transcribeService.uploadByHFT2(file);
     }
 
 
